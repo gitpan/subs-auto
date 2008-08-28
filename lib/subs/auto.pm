@@ -5,6 +5,7 @@ use 5.010;
 use strict;
 use warnings;
 
+use Carp qw/croak/;
 use Symbol qw/gensym/;
 
 use Variable::Magic qw/wizard cast dispell getdata/;
@@ -15,11 +16,11 @@ subs::auto - Read barewords as subroutine names.
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 =head1 SYNOPSIS
 
@@ -44,13 +45,22 @@ our $VERSION = '0.01';
 
 This pragma lexically enables the parsing of any bareword as a subroutine name, except those which corresponds to an entry in C<%INC> (expected to be class names) or whose symbol table entry has a IO slot (expected to be filehandles).
 
+You can pass options to C<import> as key / value pairs :
+
+=over 4
+
+=item *
+
+C<< in => $pkg >>
+
+Specifies on which package the pragma should act. Defaults to the current package.
+
+=back
+
 =cut
 
 BEGIN {
- if (!Variable::Magic::VMG_UVAR) {
-  require Carp;
-  Carp::croak('uvar magic not available');
- }
+ croak 'uvar magic not available' unless Variable::Magic::VMG_UVAR;
 }
 
 my @core = qw/abs accept alarm atan2 bind binmode bless break caller chdir
@@ -78,7 +88,7 @@ my @core = qw/abs accept alarm atan2 bind binmode bless break caller chdir
               time times truncate uc ucfirst umask undef unlink unpack unshift
               untie use utime values vec wait waitpid wantarray warn when
               write/;
-push @core,qw/not/;
+push @core,qw/not __LINE__ __FILE__ DATA/;
 
 my %core;
 @core{@core} = ();
@@ -148,12 +158,27 @@ my $wiz = wizard data  => sub { +{ pkg => $_[1] } },
 
 my %pkgs;
 
+sub _validate_pkg {
+ my ($pkg, $cur) = @_;
+ return $cur unless $pkg;
+ croak 'Invalid package name' if ref $pkg
+                              or $pkg =~ /(?:-|[^\w:])/
+                              or $pkg =~ /(?:\A\d|\b:(?::\d|(?:::+)?\b))/;
+ $pkg =~ s/::$//;
+ $pkg = $cur . $pkg if $pkg eq '' or $pkg =~ /^::/;
+ $pkg;
+}
+
 sub import {
- my $pkg = caller 1;
+ shift;
+ croak 'Optional arguments must be passed as keys/values pairs' if @_ % 2;
+ my %args = @_;
+ my $cur  = (caller 1)[0];
+ my $in   = _validate_pkg $args{in}, $cur;
  $^H{bareword} = 1;
- ++$pkgs{$pkg};
+ ++$pkgs{$in};
  no strict 'refs';
- cast %{$pkg . '::'}, $wiz, $pkg;
+ cast %{$in . '::'}, $wiz, $in;
 }
 
 sub unimport {
@@ -175,6 +200,8 @@ None.
 =head1 CAVEATS
 
 C<*{'::foo'}{CODE}> will appear as defined in a scope where the pragma is enabled, C<foo> is used as a bareword, but is never actually defined afterwards. This may or may not be considered as Doing The Right Thing. However, C<*{'::foo'}{CODE}> will always return the right value if you fetch it outside the pragma's scope. Actually, you can make it return the right value even in the pragma's scope by reading C<*{'::foo'}{CODE}> outside (or by actually defining C<foo>, which is ultimately why you use this pragma, right ?).
+
+You have to open global filehandles outside of the scope of this pragma if you want them not to be treated as function calls. Or just use lexical filehandles and default ones as you should be.
 
 =head1 DEPENDENCIES
 

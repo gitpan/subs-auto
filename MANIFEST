@@ -4,7 +4,9 @@ Makefile.PL
 README
 lib/subs/auto.pm
 t/00-load.t
+t/05-args.t
 t/10-base.t
+t/11-pkg.t
 t/90-boilerplate.t
 t/91-pod.t
 t/92-pod-coverage.t

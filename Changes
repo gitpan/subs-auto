@@ -1,5 +1,9 @@
 Revision history for subs-auto
 
+0.02    2008-08-28 14:50 UTC
+        + Add : The 'in' parameter.
+        + Fix : Add exceptions for __FILE__, __LINE__ and DATA.
+
 0.01    2008-08-27 21:10 UTC
         First version, released on an unsuspecting world.
 

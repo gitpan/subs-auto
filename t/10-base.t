@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 59;
+use Test::More tests => 66;
 
 my %_re = (
  bareword => sub { qr/^Bareword\s+['"]?\s*$_[0]\s*['"]?\s+not\s+allowed\s+while\s+["']?\s*strict\s+subs\s*['"]?\s+in\s+use\s+at\s+$_[1]\s+line\s+$_[2]/ },
@@ -70,7 +70,7 @@ _got_ok('compiling to wut()');
 use subs::auto;
 
 eval { onlycalledonce 1, 2 };
-_got_undefined('onlycalledonce', 72);
+_got_undefined('onlycalledonce', __LINE__-1);
 
 eval { Test::More->import() };
 _got_ok('don\'t touch class names');
@@ -88,20 +88,16 @@ my %h = (
 my $foo;
 our @foo;
 
-my $y = eval {
- foo 1, 2, \%h;
-};
+my $y = eval { foo 1, 2, \%h };
 _got_ok('compiling to foo(1,2,\\\%h)');
 is($foo, 15, 'foo really was executed');
 
-eval {
- wut 13, "what"
-};
+eval { wut 13, "what" };
 _got_ok('compiling to wut(13,"what")');
 is($wut, 17, 'wut really was executed');
 
 eval { qux };
-_got_undefined('qux', 103);
+_got_undefined('qux', __LINE__-1);
 
 {
  no strict 'refs';
@@ -117,10 +113,10 @@ _got_undefined('qux', 103);
 }
 
 eval { no warnings; no strict; qux };
-_got_undefined('qux', 119);
+_got_undefined('qux', __LINE__-1);
 
 eval { no warnings; no strict; blech };
-_got_undefined('blech', 122);
+_got_undefined('blech', __LINE__-1);
 
 sub foo {
  if ($_[2]) {
@@ -133,9 +129,7 @@ sub foo {
  }
 }
 
-eval {
- foo 3, 4, { };
-};
+eval { foo 3, 4, { } };
 _got_ok('compiling to foo(3,4,{})');
 is($foo, 7, 'foo really was executed');
 
@@ -160,10 +154,10 @@ is($blech, 7, 'blech really was executed');
 is($warn, undef, 'no redefine warning');
 
 eval { qux };
-_got_undefined('qux', 162);
+_got_undefined('qux', __LINE__-1);
 
 eval { blech };
-_got_undefined('blech', 165);
+_got_undefined('blech', __LINE__-1);
 
 # === Up to there =============================================================
 no subs::auto;
@@ -181,6 +175,10 @@ my $cb = eval {
 _got_ok('compiling to bareword');
 $cb->();
 is($b, 'blech', 'bareword ok');
+
+eval { foo 13, 1, { } };
+_got_ok('compiling to foo(13,1,{})');
+is($foo, 14, 'foo really was executed');
 
 $warn = undef;
 {
@@ -224,7 +222,7 @@ _got_undefined('blech', 1, eval => 1);
 
 sub blech;
 eval { blech };
-_got_undefined('blech', 226);
+_got_undefined('blech', __LINE__-1);
 
 sub flop;
 
@@ -235,12 +233,38 @@ sub wut { $wut = ($_[0] || 0) + length($_[1] || ''); '::wut' }
 
 sub yay { @yay = @_; '::yay' }
 
-{
- use subs::auto;
- eval "no subs::auto; meh";
- _got_bareword("meh", 1, eval => 1);
+# === Restarting from there ===================================================
+use subs::auto;
+
+eval "no subs::auto; meh";
+_got_bareword("meh", 1, eval => 1);
 # eval "use subs::auto; meh";
 # _got_undefined('meh', 1, eval => 1, todo => 'Fails because of some bug in perl or Variable::Magic');
 # eval "meh";
 # _got_undefined('meh', 1, eval => 1, todo => 'Fails because of some bug in perl or Variable::Magic');
+
+my $buf = '';
+{
+ no subs::auto;
+ open DONGS, '>', \$buf or die "open-in-memory: $!";
 }
+print DONGS "hlagh\n";
+is($buf, "hlagh\n", 'filehandles should\'t be touched');
+close DONGS;
+
+seek DATA, 0, 1;
+my @fruits = <DATA>;
+chomp @fruits;
+is_deeply(\@fruits, [ qw/apple pear banana/ ], 'DATA filehandle ok');
+
+eval { foo 7, 9, { } };
+_got_ok('compiling to foo(7,9,{})');
+is($foo, 16, 'foo really was executed');
+
+eval { blech };
+_got_undefined('blech', __LINE__-1);
+
+__DATA__
+apple
+pear
+banana

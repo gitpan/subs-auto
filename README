@@ -2,7 +2,7 @@ NAME
     subs::auto - Read barewords as subroutine names.
 
 VERSION
-    Version 0.01
+    Version 0.02
 
 SYNOPSIS
         {
@@ -28,6 +28,13 @@ DESCRIPTION
     (expected to be class names) or whose symbol table entry has a IO slot
     (expected to be filehandles).
 
+    You can pass options to "import" as key / value pairs :
+
+    *   "in => $pkg"
+
+        Specifies on which package the pragma should act. Defaults to the
+        current package.
+
 EXPORT
     None.
 
@@ -40,6 +47,10 @@ CAVEATS
     the right value even in the pragma's scope by reading "*{'::foo'}{CODE}"
     outside (or by actually defining "foo", which is ultimately why you use
     this pragma, right ?).
+
+    You have to open global filehandles outside of the scope of this pragma
+    if you want them not to be treated as function calls. Or just use
+    lexical filehandles and default ones as you should be.
 
 DEPENDENCIES
     perl 5.10.0.
