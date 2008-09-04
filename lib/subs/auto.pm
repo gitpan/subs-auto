@@ -16,11 +16,11 @@ subs::auto - Read barewords as subroutine names.
 
 =head1 VERSION
 
-Version 0.02
+Version 0.03
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 =head1 SYNOPSIS
 
@@ -53,7 +53,7 @@ You can pass options to C<import> as key / value pairs :
 
 C<< in => $pkg >>
 
-Specifies on which package the pragma should act. Defaults to the current package.
+Specifies on which package the pragma should act. Setting C<$pkg> to C<Some::Package> allows you to resolve all functions name of the type C<Some::Package::func ...> in the current scope. You can use the pragma several times with different package names to allow resolution of all the corresponding barewords. Defaults to the current package.
 
 =back
 
@@ -119,15 +119,14 @@ sub _reset {
 
 sub _fetch {
  (undef, my $data, my $func) = @_;
- return if $data->{guard};
- return unless $func !~ /::/ and not exists $core{$func};
- local $data->{guard} = 1;
+ return if $data->{guard} or $func =~ /::/ or exists $core{$func};
+ $data->{guard} = 1;
  my $hints = (caller 0)[10];
- if ($hints and $hints->{bareword}) {
+ if ($hints and $hints->{subs__auto}) {
   my $mod = $func . '.pm';
   if (not exists $INC{$mod}) {
    my $fqn = $data->{pkg} . '::' . $func;
-   if (do { no strict 'refs'; not *$fqn{CODE} and not *$fqn{IO}}) {
+   if (do { no strict 'refs'; not *$fqn{CODE} || *$fqn{IO}}) {
     my $cb = sub {
      my ($file, $line) = (caller 0)[1, 2];
      ($file, $line) = ('(eval 0)', 0) unless $file && $line;
@@ -141,14 +140,16 @@ sub _fetch {
  } else {
   _reset($data->{pkg}, $func);
  }
+ $data->{guard} = 0;
  return;
 }
 
 sub _store {
  (undef, my $data, my $func) = @_;
  return if $data->{guard};
- local $data->{guard} = 1;
+ $data->{guard} = 1;
  _reset($data->{pkg}, $func);
+ $data->{guard} = 0;
  return;
 }
 
@@ -175,14 +176,14 @@ sub import {
  my %args = @_;
  my $cur  = (caller 1)[0];
  my $in   = _validate_pkg $args{in}, $cur;
- $^H{bareword} = 1;
+ $^H{subs__auto} = 1;
  ++$pkgs{$in};
  no strict 'refs';
  cast %{$in . '::'}, $wiz, $in;
 }
 
 sub unimport {
- $^H{bareword} = 0;
+ $^H{subs__auto} = 0;
 }
 
 {

@@ -2,7 +2,7 @@ NAME
     subs::auto - Read barewords as subroutine names.
 
 VERSION
-    Version 0.02
+    Version 0.03
 
 SYNOPSIS
         {
@@ -32,7 +32,11 @@ DESCRIPTION
 
     *   "in => $pkg"
 
-        Specifies on which package the pragma should act. Defaults to the
+        Specifies on which package the pragma should act. Setting $pkg to
+        "Some::Package" allows you to resolve all functions name of the type
+        "Some::Package::func ..." in the current scope. You can use the
+        pragma several times with different package names to allow
+        resolution of all the corresponding barewords. Defaults to the
         current package.
 
 EXPORT

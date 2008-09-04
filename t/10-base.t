@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 66;
+use Test::More tests => 67;
 
 my %_re = (
  bareword => sub { qr/^Bareword\s+['"]?\s*$_[0]\s*['"]?\s+not\s+allowed\s+while\s+["']?\s*strict\s+subs\s*['"]?\s+in\s+use\s+at\s+$_[1]\s+line\s+$_[2]/ },
@@ -263,6 +263,8 @@ is($foo, 16, 'foo really was executed');
 
 eval { blech };
 _got_undefined('blech', __LINE__-1);
+
+ok(-f $0 && -r _, '-X _');
 
 __DATA__
 apple

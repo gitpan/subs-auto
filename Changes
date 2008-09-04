@@ -1,5 +1,9 @@
 Revision history for subs-auto
 
+0.03    2008-09-05 20:10 UTC
+        + Chg : The hint hash slot used is now 'subs__auto'.
+        + Tst : More of them.
+
 0.02    2008-08-28 14:50 UTC
         + Add : The 'in' parameter.
         + Fix : Add exceptions for __FILE__, __LINE__ and DATA.
