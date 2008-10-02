@@ -2,7 +2,7 @@ NAME
     subs::auto - Read barewords as subroutine names.
 
 VERSION
-    Version 0.03
+    Version 0.04
 
 SYNOPSIS
         {
@@ -16,7 +16,7 @@ SYNOPSIS
          foo->meth;       # "'foo'->meth" if you have use'd foo somewhere,
                           #  or "foo()->meth" otherwise
          print foo 'wut'; # print to the filehandle foo if it's actually one,
-                          #  or "foo()->print('wut')" otherwise
+                          #  or "print(foo('wut'))" otherwise
         } # ... but function calls will fail at run-time if you don't
           # actually define foo somewhere
     
@@ -38,6 +38,8 @@ DESCRIPTION
         pragma several times with different package names to allow
         resolution of all the corresponding barewords. Defaults to the
         current package.
+
+    This module is not a source filter.
 
 EXPORT
     None.

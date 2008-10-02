@@ -1,5 +1,9 @@
 Revision history for subs-auto
 
+0.04    2008-10-02 20:50 UTC
+        + Doc : Nits.
+        + Tst : Yet more of them.
+
 0.03    2008-09-05 20:10 UTC
         + Chg : The hint hash slot used is now 'subs__auto'.
         + Tst : More of them.

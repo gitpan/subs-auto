@@ -16,11 +16,11 @@ subs::auto - Read barewords as subroutine names.
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 =head1 SYNOPSIS
 
@@ -35,7 +35,7 @@ our $VERSION = '0.03';
      foo->meth;       # "'foo'->meth" if you have use'd foo somewhere,
                       #  or "foo()->meth" otherwise
      print foo 'wut'; # print to the filehandle foo if it's actually one,
-                      #  or "foo()->print('wut')" otherwise
+                      #  or "print(foo('wut'))" otherwise
     } # ... but function calls will fail at run-time if you don't
       # actually define foo somewhere
     
@@ -56,6 +56,8 @@ C<< in => $pkg >>
 Specifies on which package the pragma should act. Setting C<$pkg> to C<Some::Package> allows you to resolve all functions name of the type C<Some::Package::func ...> in the current scope. You can use the pragma several times with different package names to allow resolution of all the corresponding barewords. Defaults to the current package.
 
 =back
+
+This module is B<not> a source filter.
 
 =cut
 
