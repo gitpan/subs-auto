@@ -161,7 +161,7 @@ _got_undefined('qux', __LINE__-1);
  isnt(*{'::yay'}{CODE}, undef, 'yay is defined');
  isnt(*{'::foo'}{CODE}, undef, 'foo is defined');
  is(*{'::flip'}{CODE}, undef, 'flip isn\'t defined');
- isnt(*{'::flop'}{CODE}, undef, 'flip is defined');
+ isnt(*{'::flop'}{CODE}, undef, 'flop is defined');
  is(*{'::qux'}{CODE}, undef, 'qux isn\'t defined');
  isnt(*{'::blech'}{CODE}, undef, 'blech is defined');
  isnt(*{'::wut'}{CODE}, undef, 'wut is defined');
@@ -291,7 +291,7 @@ _got_undefined('blech', 1, eval => 1);
  isnt(*{::foo}{CODE}, undef, 'foo is defined'); # calls foo
  is($foo, '::foo', 'foo was called');
  is(*{::flip}{CODE}, undef, 'flip isn\'t defined');
- isnt(*{::flop}{CODE}, undef, 'flip is defined');
+ isnt(*{::flop}{CODE}, undef, 'flop is defined');
  is(*{::qux}{CODE}, undef, 'qux isn\'t defined');
  isnt(*{::blech}{CODE}, undef, 'blech is defined');
  isnt(*{::wut}{CODE}, undef, 'wut is defined');

@@ -16,11 +16,11 @@ subs::auto - Read barewords as subroutine names.
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 =head1 SYNOPSIS
 
@@ -43,7 +43,7 @@ our $VERSION = '0.04';
 
 =head1 DESCRIPTION
 
-This pragma lexically enables the parsing of any bareword as a subroutine name, except those which corresponds to an entry in C<%INC> (expected to be class names) or whose symbol table entry has a IO slot (expected to be filehandles).
+This pragma lexically enables the parsing of any bareword as a subroutine name, except those which corresponds to an entry in C<%INC> (expected to be class names) or whose symbol table entry has an IO slot (expected to be filehandles).
 
 You can pass options to C<import> as key / value pairs :
 
@@ -122,7 +122,7 @@ sub _reset {
 sub _fetch {
  (undef, my $data, my $func) = @_;
  return if $data->{guard} or $func =~ /::/ or exists $core{$func};
- $data->{guard} = 1;
+ local $data->{guard} = 1;
  my $hints = (caller 0)[10];
  if ($hints and $hints->{subs__auto}) {
   my $mod = $func . '.pm';
@@ -142,20 +142,18 @@ sub _fetch {
  } else {
   _reset($data->{pkg}, $func);
  }
- $data->{guard} = 0;
  return;
 }
 
 sub _store {
  (undef, my $data, my $func) = @_;
  return if $data->{guard};
- $data->{guard} = 1;
+ local $data->{guard} = 1;
  _reset($data->{pkg}, $func);
- $data->{guard} = 0;
  return;
 }
 
-my $wiz = wizard data  => sub { +{ pkg => $_[1] } },
+my $wiz = wizard data  => sub { +{ pkg => $_[1], guard => 0 } },
                  fetch => \&_fetch,
                  store => \&_store;
 
@@ -218,7 +216,7 @@ L<Variable::Magic> with C<uvar> magic enabled (this should be assured by the req
 
 Vincent Pit, C<< <perl at profvince.com> >>, L<http://www.profvince.com>.
 
-You can contact me by mail or on #perl @ FreeNode (vincent or Prof_Vince).
+You can contact me by mail or on C<irc.perl.org> (vincent).
 
 =head1 BUGS
 

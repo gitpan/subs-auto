@@ -1,5 +1,8 @@
 Revision history for subs-auto
 
+0.05    2009-07-01 09:05 UTC
+        + Upd : Resources in META.yml.
+
 0.04    2008-10-02 20:50 UTC
         + Doc : Nits.
         + Tst : Yet more of them.

@@ -2,7 +2,7 @@ NAME
     subs::auto - Read barewords as subroutine names.
 
 VERSION
-    Version 0.04
+    Version 0.05
 
 SYNOPSIS
         {
@@ -25,7 +25,7 @@ SYNOPSIS
 DESCRIPTION
     This pragma lexically enables the parsing of any bareword as a
     subroutine name, except those which corresponds to an entry in %INC
-    (expected to be class names) or whose symbol table entry has a IO slot
+    (expected to be class names) or whose symbol table entry has an IO slot
     (expected to be filehandles).
 
     You can pass options to "import" as key / value pairs :
@@ -69,8 +69,7 @@ DEPENDENCIES
 AUTHOR
     Vincent Pit, "<perl at profvince.com>", <http://www.profvince.com>.
 
-    You can contact me by mail or on #perl @ FreeNode (vincent or
-    Prof_Vince).
+    You can contact me by mail or on "irc.perl.org" (vincent).
 
 BUGS
     Please report any bugs or feature requests to "bug-subs-auto at
