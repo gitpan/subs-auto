@@ -2,7 +2,7 @@ NAME
     subs::auto - Read barewords as subroutine names.
 
 VERSION
-    Version 0.05
+    Version 0.06
 
 SYNOPSIS
         {
@@ -36,8 +36,9 @@ DESCRIPTION
         "Some::Package" allows you to resolve all functions name of the type
         "Some::Package::func ..." in the current scope. You can use the
         pragma several times with different package names to allow
-        resolution of all the corresponding barewords. Defaults to the
-        current package.
+        resolution of all the corresponding barewords.
+
+        Defaults to the current package.
 
     This module is not a source filter.
 
@@ -58,13 +59,17 @@ CAVEATS
     if you want them not to be treated as function calls. Or just use
     lexical filehandles and default ones as you should be.
 
+    This pragma doesn't propagate into "eval STRING".
+
 DEPENDENCIES
     perl 5.10.0.
 
-    Carp (standard since perl 5), Symbol (since 5.002).
-
     Variable::Magic with "uvar" magic enabled (this should be assured by the
     required perl version).
+
+    B::Keywords.
+
+    Carp (standard since perl 5), XSLoader (since 5.006).
 
 AUTHOR
     Vincent Pit, "<perl at profvince.com>", <http://www.profvince.com>.
@@ -90,7 +95,7 @@ ACKNOWLEDGEMENTS
     Thanks to Sebastien Aperghis-Tramoni for helping to name this pragma.
 
 COPYRIGHT & LICENSE
-    Copyright 2008 Vincent Pit, all rights reserved.
+    Copyright 2008,2009,2010 Vincent Pit, all rights reserved.
 
     This program is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself.

@@ -1,5 +1,16 @@
 Revision history for subs-auto
 
+0.06    2010-07-25 18:10 UTC
+        + Chg : B::Keywords is now used for its list of core keywords.
+        + Fix : Compatibility with Perl 5.11.2 (and thus 5.12 and later).
+        + Fix : The reset globs now keep their original file name and line
+                number. Symbol is no longer needed.
+        + Fix : The default package on which act the pragma was off by one
+                stack frame.
+        + Fix : Calling a method at compile time on a package on which the
+                pragma acts no longer breaks.
+        + Fix : Work around Kwalitee test misfailures.
+
 0.05    2009-07-01 09:05 UTC
         + Upd : Resources in META.yml.
 
