@@ -6,6 +6,10 @@
 #include "perl.h"
 #include "XSUB.h"
 
+#ifndef GvCV_set
+# define GvCV_set(G, C) (GvCV(G) = (C))
+#endif
+
 MODULE = subs::auto      PACKAGE = subs::auto
 
 PROTOTYPES: ENABLE
@@ -18,7 +22,7 @@ PPCODE:
  gv = gv_fetchsv(fqn, 0, 0);
  if (gv) {
   CV *cv = GvCV(gv);
-  GvCV(gv) = NULL;
+  GvCV_set(gv, NULL);
   SvREFCNT_dec(cv);
  }
  XSRETURN(0);

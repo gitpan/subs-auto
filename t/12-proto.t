@@ -10,7 +10,7 @@ sub foo ($) { $foo = $_[0] };
 
 my $baz;
 eval q|
- use warnings qw/FATAL redefine prototype/;
+ use warnings qw<FATAL redefine prototype>;
  sub main::baz ($) { $baz = $_[0] }
 |;
 like($@, qr/Prototype\s+mismatch\s*:\s+sub\s+main::baz\s*:\s+none\s+vs\s+\(\$\)/, 'baz appears as prototyped');

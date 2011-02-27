@@ -1,5 +1,8 @@
 Revision history for subs-auto
 
+0.07    2011-02-27 15:45 UTC
+        + Fix : Compatibility with perl 5.13.10.
+
 0.06    2010-07-25 18:10 UTC
         + Chg : B::Keywords is now used for its list of core keywords.
         + Fix : Compatibility with Perl 5.11.2 (and thus 5.12 and later).

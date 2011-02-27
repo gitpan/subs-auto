@@ -10,7 +10,7 @@ my %res;
 eval q[
  package subs::auto::Test;
  use subs::auto;
- $res{"${_}2"} = __PACKAGE__->can($_) ? 1 : 0 for qw/foo bar baz qux/;
+ $res{"${_}2"} = __PACKAGE__->can($_) ? 1 : 0 for qw<foo bar baz qux>;
  return;
  BEGIN { $res{foo} = __PACKAGE__->can('foo') ? 1 : 0; }
  sub bar;

@@ -61,7 +61,7 @@ package MY;
 
 sub postamble {
  my $cv = join ' -coverage ', 'cover',
-                            qw/statement branch condition path subroutine time/;
+                            qw<statement branch condition path subroutine time>;
  <<POSTAMBLE;
 cover test_cover:
 	$cv -test

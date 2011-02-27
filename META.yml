@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               subs-auto
-version:            0.06
+version:            0.07
 abstract:           Read barewords as subroutine names.
 author:
     - Vincent Pit <perl@profvince.com>

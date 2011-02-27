@@ -3,10 +3,10 @@
 use strict;
 use warnings;
 
-use lib qw{blib/lib};
+use blib;
 
 my $x = 7;
-my @a = qw/ba na na/;
+my @a = qw<ba na na>;
 
 {
  use subs::auto;

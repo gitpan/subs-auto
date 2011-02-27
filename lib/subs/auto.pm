@@ -11,13 +11,13 @@ subs::auto - Read barewords as subroutine names.
 
 =head1 VERSION
 
-Version 0.06
+Version 0.07
 
 =cut
 
 our $VERSION;
 BEGIN {
- $VERSION = '0.06';
+ $VERSION = '0.07';
 }
 
 =head1 SYNOPSIS
@@ -67,7 +67,7 @@ use B;
 
 use B::Keywords;
 
-use Variable::Magic 0.31 qw/wizard cast dispell getdata/;
+use Variable::Magic 0.31 qw<wizard cast dispell getdata>;
 
 BEGIN {
  unless (Variable::Magic::VMG_UVAR) {
@@ -84,7 +84,7 @@ my %core;
  @B::Keywords::Functions,
  'DATA',
 } = ();
-delete @core{qw/my local/};
+delete @core{qw<my local>};
 
 BEGIN {
  *_REFCNT_PLACEHOLDERS = eval 'sub () { ' . ($] < 5.011002 ? 0 : 1) . '}'
@@ -283,7 +283,7 @@ Thanks to Sebastien Aperghis-Tramoni for helping to name this pragma.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2008,2009,2010 Vincent Pit, all rights reserved.
+Copyright 2008,2009,2010,2011 Vincent Pit, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

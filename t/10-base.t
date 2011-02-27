@@ -284,7 +284,7 @@ _got_undefined('blech', 1, eval => 1);
 # ... How's my symbol table, Doug Hastings? ...................................
 
 {
- no strict qw/refs subs/;
+ no strict qw<refs subs>;
  is(*{::feh}{CODE}, undef, 'feh isn\'t defined');
  is(*{::feh}{CODE}, undef, 'feh isn\'t defined, really');
  isnt(*{::yay}{CODE}, undef, 'yay is defined');
@@ -340,7 +340,7 @@ close DONGS;
 seek DATA, 0, 1;
 my @fruits = <DATA>;
 chomp @fruits;
-is_deeply(\@fruits, [ qw/apple pear banana/ ], 'DATA filehandle ok');
+is_deeply(\@fruits, [ qw<apple pear banana> ], 'DATA filehandle ok');
 
 # ... Retest foo (declared and defined inside) ................................
 

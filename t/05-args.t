@@ -7,7 +7,7 @@ use Test::More tests => 8;
 
 my $invalid = qr/Invalid\s+package\s+name/;
 
-eval "use subs::auto qw/a b c/";
+eval "use subs::auto qw<a b c>";
 like($@, qr|Optional\s+arguments\s+must\s+be\s+passed\s+as\s+keys?\s*/\s*values?\s+pairs?|, 'no even number of args');
 
 eval "use subs::auto in => \\( q{foo::bar} )";
