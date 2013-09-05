@@ -196,7 +196,7 @@ is($foo, 7, 'foo really was executed');
 
 $warn = undef;
 eval {
- local $SIG{__WARN__} = sub { $warn = $_[0] =~ /Subroutine\s+\S+redefined/ }; 
+ local $SIG{__WARN__} = sub { $warn = $_[0] =~ /Subroutine\s+\S+redefined/ };
  local *qux = sub { $qux = $_[0] };
  qux 5;
 };
@@ -236,7 +236,7 @@ my $cb = eval {
    no strict;
    no warnings 'reserved';
    blech;
-  }  
+  }
  }
 };
 _got_ok('compiling to bareword');

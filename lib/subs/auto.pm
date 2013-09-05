@@ -11,13 +11,13 @@ subs::auto - Read barewords as subroutine names.
 
 =head1 VERSION
 
-Version 0.07
+Version 0.08
 
 =cut
 
 our $VERSION;
 BEGIN {
- $VERSION = '0.07';
+ $VERSION = '0.08';
 }
 
 =head1 SYNOPSIS
@@ -36,7 +36,7 @@ BEGIN {
                       #  or "print(foo('wut'))" otherwise
     } # ... but function calls will fail at run-time if you don't
       # actually define foo somewhere
-    
+
     foo; # BANG
 
 =head1 DESCRIPTION
@@ -87,7 +87,7 @@ my %core;
 delete @core{qw<my local>};
 
 BEGIN {
- *_REFCNT_PLACEHOLDERS = eval 'sub () { ' . ($] < 5.011002 ? 0 : 1) . '}'
+ *_REFCNT_PLACEHOLDERS = eval 'sub () { ' . ("$]" < 5.011_002 ? 0 : 1) . '}'
 }
 
 my $tag = wizard data => sub { \(my $data = _REFCNT_PLACEHOLDERS ? 2 : 1) };
@@ -252,11 +252,14 @@ This pragma doesn't propagate into C<eval STRING>.
 
 L<perl> 5.10.0.
 
+A C compiler.
+This module may happen to build with a C++ compiler as well, but don't rely on it, as no guarantee is made in this regard.
+
 L<Variable::Magic> with C<uvar> magic enabled (this should be assured by the required perl version).
 
 L<B::Keywords>.
 
-L<Carp> (standard since perl 5), L<XSLoader> (since 5.006).
+L<Carp> (standard since perl 5), L<XSLoader> (since 5.6.0).
 
 =head1 AUTHOR
 
@@ -283,7 +286,7 @@ Thanks to Sebastien Aperghis-Tramoni for helping to name this pragma.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2008,2009,2010,2011 Vincent Pit, all rights reserved.
+Copyright 2008,2009,2010,2011,2013 Vincent Pit, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

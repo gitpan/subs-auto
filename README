@@ -2,7 +2,7 @@ NAME
     subs::auto - Read barewords as subroutine names.
 
 VERSION
-    Version 0.07
+    Version 0.08
 
 SYNOPSIS
         {
@@ -19,7 +19,7 @@ SYNOPSIS
                           #  or "print(foo('wut'))" otherwise
         } # ... but function calls will fail at run-time if you don't
           # actually define foo somewhere
-    
+
         foo; # BANG
 
 DESCRIPTION
@@ -64,12 +64,15 @@ CAVEATS
 DEPENDENCIES
     perl 5.10.0.
 
+    A C compiler. This module may happen to build with a C++ compiler as
+    well, but don't rely on it, as no guarantee is made in this regard.
+
     Variable::Magic with "uvar" magic enabled (this should be assured by the
     required perl version).
 
     B::Keywords.
 
-    Carp (standard since perl 5), XSLoader (since 5.006).
+    Carp (standard since perl 5), XSLoader (since 5.6.0).
 
 AUTHOR
     Vincent Pit, "<perl at profvince.com>", <http://www.profvince.com>.
@@ -95,7 +98,7 @@ ACKNOWLEDGEMENTS
     Thanks to Sebastien Aperghis-Tramoni for helping to name this pragma.
 
 COPYRIGHT & LICENSE
-    Copyright 2008,2009,2010,2011 Vincent Pit, all rights reserved.
+    Copyright 2008,2009,2010,2011,2013 Vincent Pit, all rights reserved.
 
     This program is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself.
